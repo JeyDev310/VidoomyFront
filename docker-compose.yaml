@@ -1,0 +1,39 @@
+version: '3'
+
+networks:
+    app:
+
+services:
+    redis_slave:
+        image: redis:5-alpine
+        ports: [6379]
+        command: redis-server --slaveof rtbadmin.vidoomy.com 32798
+        networks:
+          - app
+
+    php:
+        build:
+          context: .
+          dockerfile: docker/php/Dockerfile
+        restart: on-failure
+        env_file:
+          - .env
+        depends_on:
+          - redis_slave
+        networks:
+          - app
+
+    nginx:
+        image: nginx:stable-alpine
+        restart: on-failure
+        depends_on:
+          - php
+        volumes:
+          - './public/:/usr/src/app'
+          - './docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro'
+          - './data/certs:/etc/nginx/certs'
+        ports:
+          - '90:80'
+          - '443:443'
+        networks:
+          - app

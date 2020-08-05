@@ -1,0 +1,109 @@
+================================================================================
+Deployment started at Fri, 15 May 2020 11:14:52 +0000
+================================================================================
+
+===> Initializing configuration
+---> Processing the configuration options of the deployer class
+_symfonyEnvironmentEnvVarName : APP_ENV
+binDir                        : bin
+cacheDir                      : var/cache
+composerInstallFlags          : --no-dev --prefer-dist --no-interaction --quiet
+composerOptimizeFlags         : --optimize
+configDir                     : config
+consoleBinaryPath             : 
+controllersToRemove           : []
+deployDir                     : /home/ec2-user/demoDeploy
+dumpAsseticAssets             : false
+installWebAssets              : true
+keepReleases                  : 5
+localProjectDir               : /Users/ando/Projects/Vidoomy/bdmFront
+logDir                        : var/log
+permissionGroup               : 
+permissionMethod              : chmod
+permissionMode                : 0777
+permissionUser                : 
+remoteComposerBinaryPath      : /usr/local/bin/composer
+remotePhpBinaryPath           : php
+repositoryBranch              : master
+repositoryUrl                 : git@github.com:skeletorsmith/bdmFront
+resetOpCacheFor               : 
+servers                       : bdmFront
+sharedDirs                    : ["var/log"]
+sharedFiles                   : []
+srcDir                        : src
+symfonyEnvironment            : prod
+templatesDir                  : templates
+updateRemoteComposerBinary    : false
+useSshAgentForwarding         : true
+warmupCache                   : true
+webDir                        : public
+writableDirs                  : ["var/cache/","var/log/"]
+---> Checking technical requirements
+[localhost] Executing command: "cd /Users/ando/Projects/Vidoomy/bdmFront && which git"
+| out :: /usr/bin/git
+[OK] "git" command exists
+[localhost] Executing command: "cd /Users/ando/Projects/Vidoomy/bdmFront && which ssh"
+| out :: /usr/bin/ssh
+[OK] "ssh" command exists
+[bdmFront] Executing command: "echo 1444290808"
+| out :: 1444290808
+[OK] The server allows to login via SSH from the local machine
+[bdmFront] Executing command: "which /usr/local/bin/composer"
+| out :: /usr/local/bin/composer
+[OK] "/usr/local/bin/composer" command exists
+Executing __ beforeStartingDeploy __ hook
+
+===> Starting the deployment
+---> Initializing server options
+Enabling SSH agent forwarding for localhost server
+Enabling SSH agent forwarding for bdmFront server
+Setting the deploy_dir property for bdmFront server
+---> Creating the remote directory layout
+[bdmFront] Executing command: "(export APP_ENV=prod; mkdir -p /home/ec2-user/demoDeploy && mkdir -p /home/ec2-user/demoDeploy/releases && mkdir -p /home/ec2-user/demoDeploy/shared)"
+[bdmFront] Executing command: "(export APP_ENV=prod; export _release_path="/home/ec2-user/demoDeploy/releases/$(date +%Y%m%d%H%M%S)" && mkdir -p $_release_path && echo $_release_path)"
+| out :: /home/ec2-user/demoDeploy/releases/20200515111502
+---> Initializing server directory layout
+Executing __ beforeUpdating __ hook
+Nothing to execute
+
+===> Updating app code
+---> Getting the revision ID of the code repository
+[localhost] Executing command: "(export APP_ENV=prod; cd /Users/ando/Projects/Vidoomy/bdmFront && git ls-remote git@github.com:skeletorsmith/bdmFront master)"
+| out :: 3da7520ccdfff2595d6a45d33fa80c5db9a6a628	refs/heads/master
+Code revision hash = 3da7520ccdfff2595d6a45d33fa80c5db9a6a628
+---> Updating code base with remote_cache strategy
+[bdmFront] Executing command: "(export APP_ENV=prod; cd /home/ec2-user/demoDeploy/releases/20200515111502 && if [ -d /home/ec2-user/demoDeploy/repo ]; then cd /home/ec2-user/demoDeploy/repo && git fetch -q origin && git fetch --tags -q origin && git reset -q --hard 3da7520ccdfff2595d6a45d33fa80c5db9a6a628 && git clean -q -d -x -f; else git clone -q -b master git@github.com:skeletorsmith/bdmFront /home/ec2-user/demoDeploy/repo && cd /home/ec2-user/demoDeploy/repo && git checkout -q -b deploy 3da7520ccdfff2595d6a45d33fa80c5db9a6a628; fi)"
+Copying the updated code to the new release directory
+[bdmFront] Executing command: "(export APP_ENV=prod; cd /home/ec2-user/demoDeploy/releases/20200515111502 && cp -RPp /home/ec2-user/demoDeploy/repo/* /home/ec2-user/demoDeploy/releases/20200515111502)"
+Executing __ beforePreparing __ hook
+Nothing to execute
+
+===> Preparing app
+---> Creating cache directory
+[bdmFront] Executing command: "(export APP_ENV=prod; cd /home/ec2-user/demoDeploy/releases/20200515111502 && if [ -d /home/ec2-user/demoDeploy/releases/20200515111502/var/cache ]; then rm -rf /home/ec2-user/demoDeploy/releases/20200515111502/var/cache; fi; mkdir -p /home/ec2-user/demoDeploy/releases/20200515111502/var/cache)"
+---> Creating log directory
+[bdmFront] Executing command: "(export APP_ENV=prod; cd /home/ec2-user/demoDeploy/releases/20200515111502 && if [ -d /home/ec2-user/demoDeploy/releases/20200515111502/var/log ] ; then rm -rf /home/ec2-user/demoDeploy/releases/20200515111502/var/log; fi; mkdir -p /home/ec2-user/demoDeploy/releases/20200515111502/var/log)"
+---> Creating symlinks for shared directories
+[bdmFront] Executing command: "(export APP_ENV=prod; cd /home/ec2-user/demoDeploy/releases/20200515111502 && mkdir -p /home/ec2-user/demoDeploy/shared/var/log)"
+[bdmFront] Executing command: "(export APP_ENV=prod; cd /home/ec2-user/demoDeploy/releases/20200515111502 && if [ -d /home/ec2-user/demoDeploy/releases/20200515111502/var/log ] ; then rm -rf /home/ec2-user/demoDeploy/releases/20200515111502/var/log; fi)"
+[bdmFront] Executing command: "(export APP_ENV=prod; cd /home/ec2-user/demoDeploy/releases/20200515111502 && ln -nfs /home/ec2-user/demoDeploy/shared/var/log /home/ec2-user/demoDeploy/releases/20200515111502/var/log)"
+---> Creating symlinks for shared files
+---> Setting permissions for writable dirs using the "chmod" method
+[bdmFront] Executing command: "(export APP_ENV=prod; cd /home/ec2-user/demoDeploy/releases/20200515111502 && chmod -R 0777 var/cache/ var/log/)"
+---> Installing Composer dependencies
+[bdmFront] Executing command: "(export APP_ENV=prod; cd /home/ec2-user/demoDeploy/releases/20200515111502 && /usr/local/bin/composer install --no-dev --prefer-dist --no-interaction --quiet)"
+| err :: Script @auto-scripts was called via post-install-cmd
+
+********************************************************************************
+[ERROR] Cancelling the deployment and reverting the changes
+********************************************************************************
+
+
+********************************************************************************
+A log file with all the error details has been generated in /Users/ando/Projects/Vidoomy/bdmFront/var/log/deploy_prod.log
+********************************************************************************
+
+Executing __ beforeCancelingDeploy __ hook
+Nothing to execute
+---> Deleting the last release directory
+[bdmFront] Executing command: "(export APP_ENV=prod; cd /home/ec2-user/demoDeploy/releases/20200515111502 && export _last_release_dirname=$(ls -r1 /home/ec2-user/demoDeploy/releases | head -n 1) && rm -fr /home/ec2-user/demoDeploy/releases/$_last_release_dirname)"
