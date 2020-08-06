@@ -7,12 +7,39 @@ framework:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
             # async: '%env(MESSENGER_TRANSPORT_DSN)%'
             stats:
-                dsn: '%env(RABBITMQ_DSN)%'
+                dsn: 'amqp://%env(RABBITMQ_USER)%:%env(RABBITMQ_PASS)%@%env(RABBITMQ_URL_PORT)%/%2f/bidexchange?'
                 options:
+                    exchange:
+                        type: 'direct'
                     vhost: "bidoomy"
                     queues:
                         stats:
+                            binding_keys:
+                              - stats
                             name: "stats_name"
+            bids:
+                dsn: 'amqp://%env(RABBITMQ_USER)%:%env(RABBITMQ_PASS)%@%env(RABBITMQ_URL_PORT)%/%2f/bidexchange?'
+                options:
+                    exchange:
+                        type: 'direct'
+                    vhost: "bidoomy"
+                    queues:
+                        bids:
+                            binding_keys:
+                              - bids
+                            name: "bids_name"
+
+            cookie:
+                dsn: 'amqp://%env(RABBITMQ_USER)%:%env(RABBITMQ_PASS)%@%env(RABBITMQ_URL_PORT)%/%2f/bidexchange?'
+                options:
+                    exchange:
+                        type: 'direct'
+                    vhost: "bidoomy"
+                    queues:
+                        cookie:
+                            binding_keys:
+                              - cookie
+                            name: "cookie_name"
 
             # failed: 'doctrine://default?queue_name=failed'
             # sync: 'sync://'
@@ -20,4 +47,6 @@ framework:
         routing:
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
-            App\Message\StatsMessage: stats
+            'App\Message\StatsMessage': stats
+            'App\Message\BidMessage': bids
+            'App\Message\CookieMessage': cookie

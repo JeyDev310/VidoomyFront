@@ -9,6 +9,7 @@
 namespace App\Handler\AdAdapter;
 
 use App\Model\OpenRTB25\BannerObject;
+use App\Model\OpenRTB25\NativeObject;
 use App\Model\OpenRTB25\NativeRequestAssetsObject;
 use App\Model\OpenRTB25\NativeRequestObject;
 use App\Model\OpenRTB25\NativeRequestAssetsTitleObject;
@@ -28,6 +29,7 @@ use App\Model\OpenRTB25\DeviceObject;
 use App\Model\OpenRTB25\PublisherObject;
 use App\Model\OpenRTB25\SiteObject;
 use App\Model\OpenRTB25\AppObject;
+use App\Model\OpenRTB25\UserObject;
 
 class FormatVidoomyToRTBHandler
 {
@@ -73,7 +75,8 @@ class FormatVidoomyToRTBHandler
                     $nativeAssetArray[] = new NativeRequestAssetsObject(4, 0, null, null, null, new NativeRequestAssetsDataObject($adRequest->getNativeDataType()));
                 }
 
-                $creativeObject = new NativeRequestObject("1.2",$nativeAssetArray);
+                $nativeRequestObject = new NativeRequestObject('1.2',$nativeAssetArray);
+                $creativeObject = new NativeObject($nativeRequestObject);
                 $arrayImpressions[] = new ImpressionObject('1',null, null, $creativeObject, $RTBSetup->getBidfloor(), 'USD', $adRequest->isSecure(),$pmpObject);
                 break;
         }
@@ -81,6 +84,14 @@ class FormatVidoomyToRTBHandler
         $geoObject = new GeoObject($adRequest->getCountry(),$adRequest->getCity(),$adRequest->getLat(),$adRequest->getLon());
 
         $deviceObject = new DeviceObject($geoObject, $adRequest->getIp(), $adRequest->getUa(),$adRequest->getLanguage(),$adRequest->getCarrier(),$adRequest->getDevicetype(),$adRequest->getIfa(),$adRequest->getOs());
+
+
+        $explodeCookie = explode('::::',$adRequest->getCookie());
+        if(isset($explodeCookie[1])){
+            $userObject = new UserObject($explodeCookie[0],$explodeCookie[1]);
+        }else{
+            $userObject = new UserObject($explodeCookie[0]);
+        }
 
         $publisherObject = new PublisherObject($adRequest->getPublisherId(),$adRequest->getPublisherName(),$adRequest->getPublisherCat());
 
@@ -98,7 +109,7 @@ class FormatVidoomyToRTBHandler
         $extObject = new RegulationExtObject($adRequest->isGdpr(),$adRequest->getUsPrivacy());
         $regsObject = new RegulationObject($adRequest->isCoppa(),$extObject);
 
-        $bidRequest = new BidRequest($adRequest->getId(), $arrayImpressions, $deviceObject,['USD'], $RTBSetup->getTmax(),$RTBSetup->getAt(), $siteObject, $appObject, $RTBSetup->getBcat(), $RTBSetup->getBadv(), $RTBSetup->getWseat(), $regsObject);
+        $bidRequest = new BidRequest($adRequest->getId(), $arrayImpressions, $deviceObject,['USD'], $RTBSetup->getTmax(),$RTBSetup->getAt(), $siteObject, $appObject, $userObject, $RTBSetup->getBcat(), $RTBSetup->getBadv(), $RTBSetup->getWseat(), $regsObject);
 
         return $bidRequest;
     }

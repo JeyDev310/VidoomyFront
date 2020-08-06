@@ -18,11 +18,12 @@ that should be used for the class.
 
 @Exclude
 ~~~~~~~~
-This annotation can be defined on a property to indicate that the property should
-not be serialized/unserialized. Works only in combination with NoneExclusionPolicy.
+This annotation can be defined on a property or a class to indicate that the property or class
+should not be serialized/unserialized. Works only in combination with NoneExclusionPolicy.
 
-If the ``ExpressionLanguageExclusionStrategy`` exclusion strategy is enabled, will
-be possible to use ``@Exclude(if="expression")`` to exclude dynamically a property.
+If the ``ExpressionLanguageExclusionStrategy`` exclusion strategy is enabled, it will
+be possible to use ``@Exclude(if="expression")`` to exclude dynamically a property
+or an object if used on class level.
 
 @Expose
 ~~~~~~~
@@ -371,6 +372,21 @@ Available Types:
 |                                                            | timezone)                                        |
 +------------------------------------------------------------+--------------------------------------------------+
 | DateTimeImmutable<'format', 'zone', 'deserializeFormats'>  | PHP's DateTimeImmutable object (custom format/   |
+|                                                            | timezone/deserialize format). If you do not want |
+|                                                            | to specify a specific timezone, use an empty     |
+|                                                            | string (''). DeserializeFormats can either be a  |
+|                                                            | string or an array of string.                    |
++------------------------------------------------------------+--------------------------------------------------+
+| DateTimeInterface                                          | PHP's DateTimeImmutable object (default format*/ |
+|                                                            | timezone).                                       |
++------------------------------------------------------------+--------------------------------------------------+
+| DateTimeInterface<'format'>                                | PHP's DateTimeImmutable object (custom format/   |
+|                                                            | default timezone)                                |
++------------------------------------------------------------+--------------------------------------------------+
+| DateTimeInterface<'format', 'zone'>                        | PHP's DateTimeImmutable object (custom format/   |
+|                                                            | timezone)                                        |
++------------------------------------------------------------+--------------------------------------------------+
+| DateTimeInterface<'format', 'zone', 'deserializeFormats'>  | PHP's DateTimeImmutable object (custom format/   |
 |                                                            | timezone/deserialize format). If you do not want |
 |                                                            | to specify a specific timezone, use an empty     |
 |                                                            | string (''). DeserializeFormats can either be a  |

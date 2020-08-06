@@ -59,6 +59,8 @@ class GetRTBSetupHandler
 
         $deals = $this->redis->smembers('deals:global');
 
+        $this->redis->disconnect();
+
         $dealsArray = array();
         foreach($deals as $deal) {
             $dealExploded = explode(':', $deal);

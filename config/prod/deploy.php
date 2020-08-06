@@ -10,11 +10,12 @@ return new class extends DefaultDeployer
             // SSH connection string to connect to the remote server (format: user@host-or-IP:port-number)
             ->server('bdmFront')
             // the absolute path of the remote server directory where the project is deployed
-            ->deployDir('/home/ec2-user/demoDeploy')
+            ->deployDir('/home/ec2-user/deploy')
             // the URL of the Git repository where the project code is hosted
             ->repositoryUrl('git@github.com:skeletorsmith/bdmFront')
             // the repository branch to deploy
             ->repositoryBranch('master')
+            ->sharedFilesAndDirs(['.env'])
         ;
     }
 
@@ -27,7 +28,6 @@ return new class extends DefaultDeployer
     // run some local or remote commands after the deployment is finished
     public function beforeFinishingDeploy()
     {
-        // $this->runRemote('{{ console_bin }} app:my-task-name');
-        // $this->runLocal('say "The deployment has finished."');
+        $this->runLocal('scp config/secrets/prod/prod.decrypt.private.php bdmFront:/home/ec2-user/deploy/current/config/secrets/prod');
     }
 };

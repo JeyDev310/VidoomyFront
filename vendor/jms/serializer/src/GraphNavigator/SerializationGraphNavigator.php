@@ -178,7 +178,7 @@ final class SerializationGraphNavigator extends GraphNavigator implements GraphN
                 // metadata for the actual type of the object, not the base class.
                 if (class_exists($type['name'], false) || interface_exists($type['name'], false)) {
                     if (is_subclass_of($data, $type['name'], false)) {
-                        $type = ['name' => \get_class($data), 'params' => []];
+                        $type = ['name' => \get_class($data), 'params' => $type['params'] ?? []];
                     }
                 }
 
@@ -212,6 +212,12 @@ final class SerializationGraphNavigator extends GraphNavigator implements GraphN
                 }
 
                 if (null !== $this->exclusionStrategy && $this->exclusionStrategy->shouldSkipClass($metadata, $this->context)) {
+                    $this->context->stopVisiting($data);
+
+                    throw new ExcludedClassException();
+                }
+
+                if (null !== $this->expressionExclusionStrategy && $this->expressionExclusionStrategy->shouldSkipClass($metadata, $this->context)) {
                     $this->context->stopVisiting($data);
 
                     throw new ExcludedClassException();

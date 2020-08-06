@@ -11,6 +11,7 @@ namespace App\Message;
 class StatsMessage
 {
     private $publisher;
+    private $adType;
     private $site;
     private $zone;
     private $domain;
@@ -27,6 +28,7 @@ class StatsMessage
     /**
      * StatsMessage constructor.
      * @param string $publisher
+     * @param int $adType
      * @param string $site
      * @param string $zone
      * @param string $domain
@@ -42,6 +44,7 @@ class StatsMessage
      */
     public function __construct(
         string $publisher,
+        int $adType,
         string $site = null,
         string $zone = null,
         string $domain = null,
@@ -56,6 +59,7 @@ class StatsMessage
         string $seat = null)
     {
         $this->publisher = $publisher;
+        $this->adType = $adType;
         $this->site = $site;
         $this->zone = $zone;
         $this->domain = $domain;
@@ -76,6 +80,14 @@ class StatsMessage
     public function getPublisher(): string
     {
         return $this->publisher;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAdType(): int
+    {
+        return $this->adType;
     }
 
     /**

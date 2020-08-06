@@ -141,12 +141,12 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
             CURLOPT_CERTINFO => $options['capture_peer_cert_chain'],
         ];
 
-        if (1.0 === (float) $options['http_version']) {
-            $curlopts[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_0;
-        } elseif (1.1 === (float) $options['http_version'] || 'https:' !== $scheme) {
-            $curlopts[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_1;
-        } elseif (\defined('CURL_VERSION_HTTP2') && CURL_VERSION_HTTP2 & self::$curlVersion['features']) {
+        if (\defined('CURL_VERSION_HTTP2') && (CURL_VERSION_HTTP2 & self::$curlVersion['features']) && ('https:' === $scheme || 2.0 === (float) $options['http_version'])) {
             $curlopts[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_2_0;
+        } elseif (1.0 === (float) $options['http_version']) {
+            $curlopts[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_0;
+        } elseif (1.1 === (float) $options['http_version']) {
+            $curlopts[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_1;
         }
 
         if (isset($options['auth_ntlm'])) {
@@ -163,7 +163,7 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
             }
 
             if (!\is_string($options['auth_ntlm'])) {
-                throw new InvalidArgumentException(sprintf('Option "auth_ntlm" must be a string or an array, "%s" given.', \gettype($options['auth_ntlm'])));
+                throw new InvalidArgumentException(sprintf('Option "auth_ntlm" must be a string or an array, "%s" given.', get_debug_type($options['auth_ntlm'])));
             }
 
             $curlopts[CURLOPT_USERPWD] = $options['auth_ntlm'];
@@ -319,7 +319,7 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
         if ($responses instanceof CurlResponse) {
             $responses = [$responses];
         } elseif (!is_iterable($responses)) {
-            throw new \TypeError(sprintf('"%s()" expects parameter 1 to be an iterable of CurlResponse objects, "%s" given.', __METHOD__, \is_object($responses) ? \get_class($responses) : \gettype($responses)));
+            throw new \TypeError(sprintf('"%s()" expects parameter 1 to be an iterable of CurlResponse objects, "%s" given.', __METHOD__, get_debug_type($responses)));
         }
 
         $active = 0;
@@ -439,7 +439,7 @@ final class CurlHttpClient implements HttpClientInterface, LoggerAwareInterface,
     {
         if (!$eof && \strlen($buffer) < $length) {
             if (!\is_string($data = $body($length))) {
-                throw new TransportException(sprintf('The return value of the "body" option callback must be a string, "%s" returned.', \gettype($data)));
+                throw new TransportException(sprintf('The return value of the "body" option callback must be a string, "%s" returned.', get_debug_type($data)));
             }
 
             $buffer .= $data;

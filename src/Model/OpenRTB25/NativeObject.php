@@ -18,15 +18,15 @@ class NativeObject
      * @Serializer\Type("App\Model\OpenRTB25\NativeRequestObject")
      * @Serializer\Groups({"message"})
      */
-    protected $request;
+    protected $request_native;
 
     /**
      * NativeObject constructor.
-     * @param NativeRequestObject $request
+     * @param NativeRequestObject $request_native
      */
-    public function __construct(NativeRequestObject $request)
+    public function __construct(NativeRequestObject $request_native)
     {
-        $this->request = $request;
+        $this->request_native = $request_native;
     }
 
     /**
@@ -34,7 +34,7 @@ class NativeObject
      */
     public function getRequest(): NativeRequestObject
     {
-        return $this->request;
+        return $this->request_native;
     }
 
 

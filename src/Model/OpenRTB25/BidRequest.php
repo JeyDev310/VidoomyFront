@@ -78,6 +78,14 @@ class BidRequest
     protected $app;
 
     /**
+     * @var UserObject
+     *
+     * @Serializer\Type("App\Model\OpenRTB25\UserObject")
+     * @Serializer\Groups({"message"})
+     */
+    protected $user;
+
+    /**
      * @var array
      *
      * @Serializer\Type("array")
@@ -119,6 +127,7 @@ class BidRequest
      * @param int $at
      * @param SiteObject $site
      * @param AppObject $app
+     * @param UserObject $user
      * @param array $bcat
      * @param array $badv
      * @param array $wseat
@@ -133,6 +142,7 @@ class BidRequest
         int $at,
         SiteObject $site = null,
         AppObject $app = null,
+        UserObject $user = null,
         array $bcat = null,
         array $badv = null,
         array $wseat = null,
@@ -146,6 +156,7 @@ class BidRequest
         $this->at = $at;
         $this->site = $site;
         $this->app = $app;
+        $this->user = $user;
         $this->bcat = $bcat;
         $this->badv = $badv;
         $this->wseat = $wseat;
@@ -214,6 +225,14 @@ class BidRequest
     public function getApp():? AppObject
     {
         return $this->app;
+    }
+
+    /**
+     * @return UserObject
+     */
+    public function getUser():? UserObject
+    {
+        return $this->user;
     }
 
     /**

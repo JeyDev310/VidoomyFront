@@ -27,7 +27,7 @@ class SiteObject
      * @Serializer\Type("string")
      * @Serializer\Groups({"message"})
      */
-    protected $site_id;
+    protected $id;
 
     /**
      * @var string
@@ -35,7 +35,7 @@ class SiteObject
      * @Serializer\Type("string")
      * @Serializer\Groups({"message"})
      */
-    protected $site_name;
+    protected $name;
 
     /**
      * @var string
@@ -43,7 +43,7 @@ class SiteObject
      * @Serializer\Type("string")
      * @Serializer\Groups({"message"})
      */
-    protected $site_domain;
+    protected $domain;
 
     /**
      * @var string
@@ -51,28 +51,28 @@ class SiteObject
      * @Serializer\Type("string")
      * @Serializer\Groups({"message"})
      */
-    protected $site_page;
+    protected $page;
 
     /**
      * SiteObject constructor.
      * @param PublisherObject $publisher
-     * @param string $site_id
-     * @param string $site_name
-     * @param string $site_domain
-     * @param string $site_page
+     * @param string $id
+     * @param string $name
+     * @param string $domain
+     * @param string $page
      */
     public function __construct(
         PublisherObject $publisher,
-        string $site_id = null,
-        string $site_name = null,
-        string $site_domain = null,
-        string $site_page = null)
+        string $id = null,
+        string $name = null,
+        string $domain = null,
+        string $page = null)
     {
         $this->publisher = $publisher;
-        $this->site_id = $site_id;
-        $this->site_name = $site_name;
-        $this->site_domain = $site_domain;
-        $this->site_page = $site_page;
+        $this->id = $id;
+        $this->name = $name;
+        $this->domain = $domain;
+        $this->page = $page;
     }
 
     /**
@@ -86,33 +86,35 @@ class SiteObject
     /**
      * @return string
      */
-    public function getSiteId():? string
+    public function getId():? string
     {
-        return $this->site_id;
+        return $this->id;
     }
 
     /**
      * @return string
      */
-    public function getSiteName():? string
+    public function getName():? string
     {
-        return $this->site_name;
+        return $this->name;
     }
 
     /**
      * @return string
      */
-    public function getSiteDomain():? string
+    public function getDomain():? string
     {
-        return $this->site_domain;
+        return $this->domain;
     }
 
     /**
      * @return string
      */
-    public function getSitePage():? string
+    public function getPage():? string
     {
-        return $this->site_page;
+        return $this->page;
     }
+
+
 
 }

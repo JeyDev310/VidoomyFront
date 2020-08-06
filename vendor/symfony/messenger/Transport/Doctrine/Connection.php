@@ -13,7 +13,7 @@ namespace Symfony\Component\Messenger\Transport\Doctrine;
 
 use Doctrine\DBAL\Connection as DBALConnection;
 use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Driver\ResultStatement;
+use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\DBAL\Schema\Schema;
@@ -159,11 +159,12 @@ class Connection
                 ->setMaxResults(1);
 
             // use SELECT ... FOR UPDATE to lock table
-            $doctrineEnvelope = $this->executeQuery(
+            $stmt = $this->executeQuery(
                 $query->getSQL().' '.$this->driverConnection->getDatabasePlatform()->getWriteLockSQL(),
                 $query->getParameters(),
                 $query->getParameterTypes()
-            )->fetch();
+            );
+            $doctrineEnvelope = $stmt instanceof Result ? $stmt->fetchAssociative() : $stmt->fetch();
 
             if (false === $doctrineEnvelope) {
                 $this->driverConnection->commit();
@@ -249,7 +250,9 @@ class Connection
             ->select('COUNT(m.id) as message_count')
             ->setMaxResults(1);
 
-        return $this->executeQuery($queryBuilder->getSQL(), $queryBuilder->getParameters(), $queryBuilder->getParameterTypes())->fetchColumn();
+        $stmt = $this->executeQuery($queryBuilder->getSQL(), $queryBuilder->getParameters(), $queryBuilder->getParameterTypes());
+
+        return $stmt instanceof Result ? $stmt->fetchOne() : $stmt->fetchColumn();
     }
 
     public function findAll(int $limit = null): array
@@ -259,7 +262,8 @@ class Connection
             $queryBuilder->setMaxResults($limit);
         }
 
-        $data = $this->executeQuery($queryBuilder->getSQL(), $queryBuilder->getParameters(), $queryBuilder->getParameterTypes())->fetchAll();
+        $stmt = $this->executeQuery($queryBuilder->getSQL(), $queryBuilder->getParameters(), $queryBuilder->getParameterTypes());
+        $data = $stmt instanceof Result ? $stmt->fetchAllAssociative() : $stmt->fetchAll();
 
         return array_map(function ($doctrineEnvelope) {
             return $this->decodeEnvelopeHeaders($doctrineEnvelope);
@@ -271,9 +275,8 @@ class Connection
         $queryBuilder = $this->createQueryBuilder()
             ->where('m.id = ?');
 
-        $data = $this->executeQuery($queryBuilder->getSQL(), [
-            $id,
-        ])->fetch();
+        $stmt = $this->executeQuery($queryBuilder->getSQL(), [$id]);
+        $data = $stmt instanceof Result ? $stmt->fetchAssociative() : $stmt->fetch();
 
         return false === $data ? null : $this->decodeEnvelopeHeaders($data);
     }
@@ -307,7 +310,7 @@ class Connection
             ->from($this->configuration['table_name'], 'm');
     }
 
-    private function executeQuery(string $sql, array $parameters = [], array $types = []): ResultStatement
+    private function executeQuery(string $sql, array $parameters = [], array $types = [])
     {
         try {
             $stmt = $this->driverConnection->executeQuery($sql, $parameters, $types);

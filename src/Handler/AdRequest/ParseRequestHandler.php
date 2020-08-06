@@ -21,7 +21,7 @@ class ParseRequestHandler
      *
      * @throws \Exception
      */
-    public function execute(Request $request): AdRequest
+    public function execute(Request $request): ?AdRequest
     {
 
         //Ad Type
@@ -29,6 +29,10 @@ class ParseRequestHandler
 
         //Bid Request Object
         $id = $request->query->get('id');
+
+        if(!$id){
+            return null;
+        }
 
         //Impression Object
         $secure = $request->query->get('secure');
@@ -73,27 +77,82 @@ class ParseRequestHandler
 
         //Publisher Object
         $publisher_id = $request->query->get('publisher_id');
+
         $publisher_name = $request->query->get('publisher_name');
+        if (empty ($publisher_name)){
+            $publisher_name = null;
+        }
+
         $publisher_cat = $request->query->get('publisher_cat');
+        if (empty ($publisher_cat)){
+            $publisher_cat = null;
+        }
 
         //Site Object
         $site_id = $request->query->get('site_id');
+        if (empty ($site_id)){
+            $site_id = null;
+        }
+
         $site_name = $request->query->get('site_name');
+        if (empty ($site_name)){
+            $site_name = null;
+        }
+
         $site_domain = $request->query->get('site_domain');
+        if (empty ($site_domain)){
+            $site_domain = null;
+        }
+
         $site_page = $request->query->get('site_page');
+        if (empty ($site_page)){
+            $site_page = null;
+        }
 
         //App Object
         $app_id = $request->query->get('app_id');
+        if (empty ($app_id)){
+            $app_id = null;
+        }
+
         $app_name = $request->query->get('app_name');
+        if (empty ($app_name)){
+            $app_name = null;
+        }
+
         $app_domain = $request->query->get('app_domain');
+        if (empty ($app_domain)){
+            $app_domain = null;
+        }
+
         $app_page = $request->query->get('app_page');
+        if (empty ($app_page)){
+            $app_page = null;
+        }
 
         //Regulation Object
         $coppa = $request->query->get('coppa');
-
+        if (empty ($coppa)){
+            $coppa = null;
+        }
         //Regs Ext Object¶
         $gdpr = $request->query->get('gdpr');
+        if (empty ($gdpr)){
+            $gdpr = null;
+        }
+
         $us_privacy = $request->query->get('us_privacy');
+        if (empty ($us_privacy)){
+            $us_privacy = null;
+        }
+
+        //User Sync Cookie
+        if($request->cookies->has('Bidoomy-Cookie')){
+            $cookie = $request->cookies->get('Bidoomy-Cookie');
+        }else{
+            $cookie = $id;
+        }
+
 
         $adRequest = new AdRequest(
             $id,
@@ -140,7 +199,8 @@ class ParseRequestHandler
             $app_page,
             $coppa,
             $gdpr,
-            $us_privacy);
+            $us_privacy,
+            $cookie);
 
         return $adRequest;
     }

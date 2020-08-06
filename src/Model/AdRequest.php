@@ -237,6 +237,11 @@ class AdRequest
     protected $us_privacy;
 
     /**
+     * @var string
+     */
+    protected $cookie;
+
+    /**
      * AdRequest constructor.
      * @param string $id
      * @param int $ad_type
@@ -283,6 +288,7 @@ class AdRequest
      * @param bool $coppa
      * @param bool $gdpr
      * @param string $us_privacy
+     * @param string $cookie
      */
     public function __construct(
         string $id,
@@ -329,7 +335,8 @@ class AdRequest
         string $app_page = null,
         bool $coppa = null,
         bool $gdpr = null,
-        string $us_privacy = null)
+        string $us_privacy = null,
+        string $cookie = null)
     {
         $this->id = $id;
         $this->ad_type = $ad_type;
@@ -376,6 +383,7 @@ class AdRequest
         $this->coppa = $coppa;
         $this->gdpr = $gdpr;
         $this->us_privacy = $us_privacy;
+        $this->cookie = $cookie;
     }
 
     /**
@@ -738,6 +746,12 @@ class AdRequest
         return $this->us_privacy;
     }
 
-
+    /**
+     * @return string
+     */
+    public function getCookie():? string
+    {
+        return $this->cookie;
+    }
 
 }

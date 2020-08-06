@@ -37,9 +37,9 @@ class ImpressionObject
     protected $banner;
 
     /**
-     * @var NativeRequestObject
+     * @var NativeObject
      *
-     * @Serializer\Type("App\Model\OpenRTB25\NativeRequestObject")
+     * @Serializer\Type("App\Model\OpenRTB25\NativeObject")
      * @Serializer\Groups({"message"})
      */
     protected $native;

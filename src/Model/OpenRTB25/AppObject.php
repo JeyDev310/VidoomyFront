@@ -26,7 +26,7 @@ class AppObject
      * @Serializer\Type("string")
      * @Serializer\Groups({"message"})
      */
-    protected $app_id;
+    protected $id;
 
     /**
      * @var string
@@ -34,7 +34,7 @@ class AppObject
      * @Serializer\Type("string")
      * @Serializer\Groups({"message"})
      */
-    protected $app_name;
+    protected $name;
 
     /**
      * @var string
@@ -42,7 +42,7 @@ class AppObject
      * @Serializer\Type("string")
      * @Serializer\Groups({"message"})
      */
-    protected $app_domain;
+    protected $domain;
 
     /**
      * @var string
@@ -50,28 +50,28 @@ class AppObject
      * @Serializer\Type("string")
      * @Serializer\Groups({"message"})
      */
-    protected $app_page;
+    protected $page;
 
     /**
      * AppObject constructor.
      * @param PublisherObject $publisher
-     * @param string $app_id
-     * @param string $app_name
-     * @param string $app_domain
-     * @param string $app_page
+     * @param string $id
+     * @param string $name
+     * @param string $domain
+     * @param string $page
      */
     public function __construct(
         PublisherObject $publisher,
-        string $app_id = null,
-        string $app_name = null,
-        string $app_domain = null,
-        string $app_page = null)
+        string $id = null,
+        string $name = null,
+        string $domain = null,
+        string $page = null)
     {
         $this->publisher = $publisher;
-        $this->app_id = $app_id;
-        $this->app_name = $app_name;
-        $this->app_domain = $app_domain;
-        $this->app_page = $app_page;
+        $this->id = $id;
+        $this->name = $name;
+        $this->domain = $domain;
+        $this->page = $page;
     }
 
     /**
@@ -85,34 +85,36 @@ class AppObject
     /**
      * @return string
      */
-    public function getAppId():? string
+    public function getId():? string
     {
-        return $this->app_id;
+        return $this->id;
     }
 
     /**
      * @return string
      */
-    public function getAppName():? string
+    public function getName():? string
     {
-        return $this->app_name;
+        return $this->name;
     }
 
     /**
      * @return string
      */
-    public function getAppDomain():? string
+    public function getDomain():? string
     {
-        return $this->app_domain;
+        return $this->domain;
     }
 
     /**
      * @return string
      */
-    public function getAppPage():? string
+    public function getPage():? string
     {
-        return $this->app_page;
+        return $this->page;
     }
+
+
 
 
 

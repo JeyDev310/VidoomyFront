@@ -32,22 +32,30 @@ class AdResponse
     protected $money;
 
     /**
+     * @var string
+     */
+    protected $bidId;
+
+    /**
      * AdResponse constructor.
      * @param string $html_code
      * @param string $seat
      * @param string $adomain
      * @param float $money
+     * @param string $bidId
      */
     public function __construct(
         string $html_code,
         string $seat = null,
         string $adomain = null,
-        float $money = null)
+        float $money = null,
+        string $bidId = null)
     {
         $this->html_code = $html_code;
         $this->seat = $seat;
         $this->adomain = $adomain;
         $this->money = $money;
+        $this->bidId = $bidId;
     }
 
     /**
@@ -82,6 +90,12 @@ class AdResponse
         return $this->money;
     }
 
-
+    /**
+     * @return string
+     */
+    public function getBidId():? string
+    {
+        return $this->bidId;
+    }
 
 }
